@@ -3,11 +3,11 @@ variables:
   python.version: '3.7.6'
 stages:
 - stage: Build
-  jobs:
-  - job: Build
-    pool:
-      name: Hosted Ubuntu Latest
-    steps:
+  # jobs:
+  # - job: Build
+  #   pool:
+  #     name: Hosted Ubuntu Latest
+  #   steps:
     # Needed for Terraform VM deployment
     # - task: InstallSSHKey@0
     #   inputs:
