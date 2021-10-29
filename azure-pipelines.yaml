@@ -3,8 +3,8 @@ variables:
   python.version: '3.7.6'
 stages:
 - stage: Build
-  # jobs:
-  # - job: Build
+  jobs:
+  - job: Build
   #   pool:
   #     name: Hosted Ubuntu Latest
   #   steps:
