@@ -46,7 +46,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'plan'
-        commandOptions: '-out=tfplan'
+        # commandOptions: '-out=tfplan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceNameAzureRM: 'up3-service-connection'
     - task: TerraformTaskV2@2
@@ -54,7 +54,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'apply'
-        commandOptions: 'tfplan -auto-approve'
+        # commandOptions: 'tfplan -auto-approve'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceNameAzureRM: 'up3-service-connection'
 
