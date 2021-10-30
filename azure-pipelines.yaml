@@ -23,7 +23,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        backendServiceArm: 'tfstate'
+        backendServiceArm: 'up3-service-connection'
         backendAzureRmResourceGroupName: 'tfstate'
         backendAzureRmStorageAccountName: 'tfstate30471'
         backendAzureRmContainerName: 'tfstate'
