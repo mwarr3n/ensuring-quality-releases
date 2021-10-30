@@ -27,7 +27,7 @@ stages:
         backendAzureRmResourceGroupName: 'tfstate'
         backendAzureRmStorageAccountName: 'tfstate30471'
         backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'terraform.tfstate'
+        backendAzureRmKey: '$(ACCESS_KEY)'
     - task: TerraformTaskV1@0
       displayName: 'validate'
       inputs:
