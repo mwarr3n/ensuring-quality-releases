@@ -14,16 +14,16 @@ stages:
         knownHostsEntry: '$(KNOWN_HOST_ENTRY)'
         sshPublicKey: '$(PUBLIC_KEY)'
         sshKeySecureFile: 'id_rsa'
-    # - task: ArchiveFiles@2
-      # displayName: 'Archive FakeRestAPI'
-      # inputs:
-        # rootFolderOrFile: 'path/to/fakerestapi'
-        # includeRootFolder: false
-        # archiveType: 'zip'
-        # archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
-    # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-      # displayName: 'Upload Package'
-      # artifact: drop-fakerestapi
+    - task: ArchiveFiles@2
+      displayName: 'Archive FakeRestAPI'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+      displayName: 'Upload Package'
+      artifact: drop-fakerestapi
 # - stage:
 #   jobs:
 #   - deployment: FakeRestAPI
