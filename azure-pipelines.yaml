@@ -18,7 +18,7 @@ stages:
       displayName: 'Terraform Install'
       inputs:
         terraformVersion: '1.0.4'
-    - task: TerraformTaskV1@0
+    - task: TerraformTaskV2@2
       displayName: 'Terraform Init'
       inputs:
         provider: 'azurerm'
@@ -29,7 +29,7 @@ stages:
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: '$(ACCESS_KEY)'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-    - task: TerraformTaskV1@0
+    - task: TerraformTaskV2@2
       displayName: 'validate'
       inputs:
         provider: 'azurerm'
