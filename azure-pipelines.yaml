@@ -11,8 +11,8 @@ stages:
     # Needed for Terraform VM deployment
     - task: InstallSSHKey@0
       inputs:
-        knownHostsEntry: 'KNOWN_HOSTS_STRING'
-        sshPublicKey: '$(public_key)'
+        knownHostsEntry: '$(KNOWN_HOST_ENTRY)'
+        sshPublicKey: '$(PUBLIC_KEY)'
         sshKeySecureFile: 'id_rsa'
     # - task: ArchiveFiles@2
       # displayName: 'Archive FakeRestAPI'
