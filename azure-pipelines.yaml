@@ -47,12 +47,7 @@ stages:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-        backendServiceArm: 'up3-service-connection'
-        backendAzureRmResourceGroupName: 'tfstate'
-        backendAzureRmStorageAccountName: 'tfstate30471'
-        backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: '$(ACCESS_KEY)'
-        # environmentServiceNameAzureRM: 'up3-service-connection'
+        environmentServiceNameAzureRM: 'up3-service-connection'
     # - task: TerraformTaskV2@2
     #   displayName: 'Terraform Apply'
     #   inputs:
