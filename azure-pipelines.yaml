@@ -16,8 +16,8 @@ stages:
         sshKeySecureFile: 'id_rsa'
     - task: TerraformInstaller@0
       displayName: 'Terraform Install'
-      inputs:
-        terraformVersion: latest
+      # inputs:
+        # terraformVersion: latest
     - task: TerraformTaskV2@2
       displayName: 'Terraform Init'
       inputs:
