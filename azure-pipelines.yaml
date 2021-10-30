@@ -48,14 +48,14 @@ stages:
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceNameAzureRM: 'up3-service-connection'
-    - task: TerraformTaskV2@2
-      displayName: 'Terraform Apply'
-      inputs:
-        provider: 'azurerm'
-        command: 'apply'
-        commandOptions: '-auto-approve'
-        workingDirectory: $(System.DefaultWorkingDirectory)/terraform'
-        environmentServiceNameAzureRM: 'up3-service-connection'
+    # - task: TerraformTaskV2@2
+    #   displayName: 'Terraform Apply'
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'apply'
+    #     commandOptions: '-auto-approve'
+    #     workingDirectory: $(System.DefaultWorkingDirectory)/terraform'
+    #     environmentServiceNameAzureRM: 'up3-service-connection'
         
       
       
