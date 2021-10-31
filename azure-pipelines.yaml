@@ -63,7 +63,7 @@ stages:
       displayName: 'Archive FakeRestAPI'
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
-        includeRootFolder: true
+        includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
