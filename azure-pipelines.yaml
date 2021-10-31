@@ -93,6 +93,7 @@ stages:
     environment:
       name:  'TEST'
       resourceType: VirtualMachine
+      resourceName: 'udacity-p3-vm'
       # tags: 'udacity-p3-vm'
     strategy:
       runOnce:
