@@ -89,9 +89,9 @@ stages:
 #               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   
   - deployment: VMDeploy
-    displayName: NAME
+    displayName: 'Deploy Selenium'
     environment:
-      name:  'TEST'
+      name:  'udacity-p3-vm'
       resourceType: VirtualMachine
       tags: 'up3'
     strategy:
