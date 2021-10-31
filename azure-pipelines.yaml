@@ -85,6 +85,7 @@ stages:
             inputs:
               azureSubscription: 'azure-sc'
               appName: 'udacity-p3-AppService'
+              WebAppName: 'up3'
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   
