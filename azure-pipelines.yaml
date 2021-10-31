@@ -132,7 +132,11 @@ stages:
         inputs:
           script: | 
             newman run StarterAPIs.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
-          # /automatedtesting/postman
-          # newman run StarterAPIs.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
+          workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+      - task: PublishTestResults@2
+        inputs:
+          testRunTitle: 'JUnit Test'
+          testResultsFormat: JUnit
+          testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
+
 
