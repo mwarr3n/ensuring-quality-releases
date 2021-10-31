@@ -39,6 +39,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'destroy'
+        commandOptions: '-var="public_key=$(PUBLIC_KEY)'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceNameAzureRM: 'up3-service-connection'
     - task: TerraformTaskV2@2
