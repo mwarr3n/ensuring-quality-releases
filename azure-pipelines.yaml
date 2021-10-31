@@ -135,7 +135,7 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
       - task: PublishTestResults@2
         inputs:
-          testRunTitle: 'JUnit Test'
+          testRunTitle: 'Regression Test'
           testResultsFormat: JUnit
           testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
 
