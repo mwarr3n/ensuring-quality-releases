@@ -69,24 +69,23 @@ stages:
       displayName: 'Upload Package'
       artifact: drop-fakerestapi
 
-
-# - stage:
-#   jobs:
-#   - deployment: FakeRestAPI
-#     pool:
-#       vmImage: 'Ubuntu-16.04'
-#     environment: 'TEST'
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: AzureWebApp@1
-#             displayName: 'Deploy Azure Web App'
-#             inputs:
-#               azureSubscription: ''
-#               appName: ''
-#               appType: webApp
-#               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+- stage:
+  jobs:
+  - deployment: FakeRestAPI
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'TEST'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: '$(SUBSCRIPTION_ID)'
+              appName: 'up3'
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   # - deployment: VMDeploy
   #   displayName: NAME
   #   environment:
