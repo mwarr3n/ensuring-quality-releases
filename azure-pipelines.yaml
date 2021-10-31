@@ -42,50 +42,52 @@ stages:
         commandOptions: '-var="public_key=$(PUBLIC_KEY)'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceNameAzureRM: 'up3-service-connection'
-    - task: TerraformTaskV2@2
-      displayName: 'Terraform Plan'
-      inputs:
-        provider: 'azurerm'
-        command: 'plan'
-        commandOptions: '-var="public_key=$(PUBLIC_KEY)'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-        environmentServiceNameAzureRM: 'up3-service-connection'
-    - task: TerraformTaskV2@2
-      displayName: 'Terraform Apply'
-      inputs:
-        provider: 'azurerm'
-        command: 'apply'
-        commandOptions: '-var="public_key=$(PUBLIC_KEY)'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-        environmentServiceNameAzureRM: 'up3-service-connection'
-    - task: ArchiveFiles@2
-      displayName: 'Archive FakeRestAPI'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-      displayName: 'Upload Package'
-      artifact: drop-fakerestapi
+#     - task: TerraformTaskV2@2
+#       displayName: 'Terraform Plan'
+#       inputs:
+#         provider: 'azurerm'
+#         command: 'plan'
+#         commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+#         environmentServiceNameAzureRM: 'up3-service-connection'
+#     - task: TerraformTaskV2@2
+#       displayName: 'Terraform Apply'
+#       inputs:
+#         provider: 'azurerm'
+#         command: 'apply'
+#         commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+#         environmentServiceNameAzureRM: 'up3-service-connection'
+#     - task: ArchiveFiles@2
+#       displayName: 'Archive FakeRestAPI'
+#       inputs:
+#         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
+#         includeRootFolder: false
+#         archiveType: 'zip'
+#         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+#     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+#       displayName: 'Upload Package'
+#       artifact: drop-fakerestapi
 
-- stage:
-  jobs:
-  - deployment: FakeRestAPI
-    pool:
-      vmImage: 'Ubuntu-latest'
-    environment: 'TEST'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App'
-            inputs:
-              azureSubscription: 'azure-service-connection'
-              appName: 'udacity-p3-AppService'
-              appType: webApp
-              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+# - stage:
+#   jobs:
+#   - deployment: FakeRestAPI
+#     pool:
+#       vmImage: 'Ubuntu-latest'
+#     environment: 'TEST'
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - task: AzureWebApp@1
+#             displayName: 'Deploy Azure Web App'
+#             inputs:
+#               azureSubscription: 'azure-service-connection'
+#               appName: 'udacity-p3-AppService'
+#               appType: webApp
+#               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+  
+  
   # - deployment: VMDeploy
   #   displayName: NAME
   #   environment:
