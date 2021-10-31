@@ -23,12 +23,12 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        backendServiceArm: 'up3-service-connection'
         backendAzureRmResourceGroupName: 'tfstate'
         backendAzureRmStorageAccountName: 'tfstate30471'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: '$(ACCESS_KEY)'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+        backendServiceArm: 'terraform-sc'
     - task: TerraformTaskV2@2
       displayName: 'Terraform Validate'
       inputs:
