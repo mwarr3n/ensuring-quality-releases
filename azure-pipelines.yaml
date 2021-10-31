@@ -131,5 +131,5 @@ stages:
         continueOnError: true
         inputs:
           script: 'newman run StarterAPIs.json'
-          workingDirectory: $(System.DefaultWorkingDirectory)/automatedtesting/'
+          workingDirectory: $(System.DefaultWorkingDirectory)'
 
