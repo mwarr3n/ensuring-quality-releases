@@ -34,13 +34,13 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'validate'
-    - task: TerraformTaskV2@2
-      displayName: 'Terraform Destroy'
-      inputs:
-        provider: 'azurerm'
-        command: 'destroy'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-        environmentServiceNameAzureRM: 'up3-service-connection'
+    # - task: TerraformTaskV2@2
+    #   displayName: 'Terraform Destroy'
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'destroy'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+    #     environmentServiceNameAzureRM: 'up3-service-connection'
     - task: TerraformTaskV2@2
       displayName: 'Terraform Plan'
       inputs:
