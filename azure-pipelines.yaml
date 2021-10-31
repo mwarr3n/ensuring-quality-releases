@@ -91,9 +91,9 @@ stages:
   - deployment: VMDeploy
     displayName: 'Deploy Selenium'
     environment:
-      name:  'udacity-p3-vm'
+      name:  'TEST'
       resourceType: VirtualMachine
-      tags: 'up3'
+      tags: 'udacity-p3-vm'
     strategy:
       runOnce:
         deploy:
