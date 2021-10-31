@@ -122,12 +122,14 @@ stages:
       - task: CmdLine@2
         displayName: Install Newman
         inputs:
-          script: 'sudo npm install -g newman'
+          script: | 
+            sudo npm install -g newman
+            sudo npm install -g newman-reporter-junitfull
           workingDirectory: $(System.DefaultWorkingDirectory)
       - task: CmdLine@2
         displayName: Run Regression Tests
         continueOnError: true
         inputs:
           script: 'newman run StarterAPIs.json'
-          workingDirectory: $(System.DefaultWorkingDirectory)/automatedtesting/postman/'
+          workingDirectory: $(System.DefaultWorkingDirectory)/automatedtesting/'
 
