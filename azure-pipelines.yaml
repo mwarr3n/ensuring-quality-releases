@@ -130,6 +130,7 @@ stages:
         displayName: Run Regression Tests
         continueOnError: true
         inputs:
-          script: 'newman run StarterAPIs.json'
+          script: | 
+            newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export junitReport.xml
           workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
 
