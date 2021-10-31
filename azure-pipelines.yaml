@@ -84,8 +84,8 @@ stages:
             displayName: 'Deploy Azure Web App'
             inputs:
               azureSubscription: 'azure-sc'
-              appName: 'udacity-p3-AppService'
-              WebAppName: 'up3'
+              # appName: 'udacity-p3-AppService'
+              WebAppName: 'udacity-p3-AppService'
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   
