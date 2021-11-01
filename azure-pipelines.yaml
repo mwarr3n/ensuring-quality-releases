@@ -164,7 +164,7 @@ stages:
           inputs:
             targetType: 'filepath'
             script: |
-              jmeter -n -t -e -o automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/report.csv -e -o automatedtesting/jmeter/report
         - task: PublishBuildArtifacts@1
           displayName: 'Publish Stress Test Report'
           inputs:
