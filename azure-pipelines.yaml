@@ -153,3 +153,8 @@ stages:
             targetType: 'inline'
             script: |
               jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
+        - task: PublishPipelineArtifact@1
+          displayName: Publish Jmeter Report
+          inputs:
+            targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report'
+            artifact: 'Jmeter Report'
