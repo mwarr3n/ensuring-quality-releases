@@ -4,7 +4,7 @@ variables:
 stages:
 - stage: Build
   jobs:
-  - job: Build
+  - job: infrastructure
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -115,7 +115,7 @@ stages:
 
 - stage: Test
   jobs:
-    - job: Test
+    - job: postmanTest
       pool:
         vmImage: 'Ubuntu-latest'
       steps:
@@ -152,5 +152,4 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              jmeter -n -t automatedtesting/jmeter/Starter.jmx
-              Jresdir=automatedtesting/jmeter/pages.csv
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
