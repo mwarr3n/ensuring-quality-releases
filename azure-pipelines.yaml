@@ -106,6 +106,107 @@ stages:
                 appType: webApp
                 package: $(Pipeline.Workspace)/fakerestapi/$(Build.BuildId)-fakerestapi.zip
 
+- stage: Test
+  jobs:
+    - job: postmanTest
+      pool:
+        vmImage: 'Ubuntu-latest'
+      steps:
+      - task: CmdLine@2
+        displayName: Install Newman
+        inputs:
+          script: | 
+            sudo npm install -g newman
+            sudo npm install -g newman-reporter-junitfull
+          workingDirectory: $(System.DefaultWorkingDirectory)
+      - task: CmdLine@2
+        displayName: Run Regression Tests
+        continueOnError: true
+        inputs:
+          script: | 
+            newman run StarterAPIs.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
+          workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+      - task: PublishTestResults@2
+        inputs:
+          testRunTitle: 'Regression Test'
+          testResultsFormat: JUnit
+          testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
+
+    - job: JmeterTest
+      pool:
+        vmImage: 'Ubuntu-latest'
+      steps:
+        - task: JMeterInstaller@0
+          displayName: 'Install JMeter 5.4.1'
+          inputs:
+            jmeterVersion: '5.4.1'
+        - task: Bash@3
+          displayName: 'JMeter Endurance Test'
+          inputs:
+            targetType: 'inline'
+            script: |
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/log-endurance.jtl -e -o automatedtesting/jmeter/report-endurance
+        - task: PublishBuildArtifacts@1
+          displayName: 'Jmeter'
+          inputs:
+            ArtifactName: 'JMeter Endurance Test Report'
+            PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-endurance/'
+        - task: Bash@3
+          displayName: 'JMeter Stress Test'
+          inputs:
+            targetType: 'inline'
+            # automatedtesting/jmeter/logs/log-stress.jtl
+            script: |
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/log-stress.jtl -e -o automatedtesting/jmeter/report-stress
+        - task: PublishBuildArtifacts@1
+          displayName: 'Jmeter'
+          inputs:
+            ArtifactName: 'JMeter Stress Test Report'
+            PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
+
+    - deployment: VMDeploy
+      displayName: 'Deploy VM'
+      pool:
+        vmImage: 'ubuntu-latest'
+      environment: 'TEST'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: ExtractFiles@1
+              displayName: 'Extract Selenium Tests'
+              inputs:
+                archiveFilePatterns: '$(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium.zip'
+                destinationFolder: '$(Pipeline.Workspace)/selenium'
+                cleanDestinationFolder: false
+                overwriteExistingFiles: true
+            - task: Bash@3
+              displayName: 'Install Selenium Packages'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  #! /bin/bash
+                
+#                   sudo apt-get upgrade -y
+#                   sudo apt-get install python3-pip -y
+#                   sudo apt-get install unzip -y
+#                   sudo apt-get install -y chromium-browser
+#                   sudo apt-get install -y expect
+#                   pip3 install selenium
+#             - task: Bash@3
+#               displayName: 'Run Selenium Test'
+#               inputs:
+#                 targetType: 'inline'
+#                 script: |
+#                   #! /bin/bash
+
+#                   cd $(Pipeline.Workspace)/selenium
+#                   mkdir -p ~/vmlogs
+#                   unbuffer python3 login.py | tee -a ~/vmlogs/log.txt
+
+
+
+
 
 # name: Azure Pipelines
 # variables:
