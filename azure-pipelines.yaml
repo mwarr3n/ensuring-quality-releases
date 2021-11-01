@@ -146,44 +146,44 @@ stages:
 #           inputs:
 #             ArtifactName: 'JMeter Stress Test Report'
 #             PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
-- stage: Deploy
+- stage: TEST
   jobs:  
     - deployment: VMDeploy
       displayName: 'Deploy VM'
       pool:
         vmImage: 'ubuntu-latest'
-        environment: 'TEST'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-              - task: ExtractFiles@1
-                displayName: 'Extract Selenium Tests'
-                inputs:
-                  archiveFilePatterns: '$(Pipeline.Workspace)/drop-selenium/$(Build.BuildId)-selenium.zip'
-                  destinationFolder: '$(Pipeline.Workspace)/selenium'
-                  cleanDestinationFolder: false
-                  overwriteExistingFiles: true
-              - task: Bash@3
-                displayName: 'Install Selenium Packages'
-                inputs:
-                  targetType: 'inline'
-                  script: |
-                    #! /bin/bash
-                  
-                    sudo apt-get upgrade -y
-                    sudo apt-get install python3-pip -y
-                    sudo apt-get install unzip -y
-                    sudo apt-get install -y chromium-browser
-                    sudo apt-get install -y expect
-                    pip3 install selenium
-              - task: Bash@3
-                displayName: 'Run Selenium Test'
-                inputs:
-                  targetType: 'inline'
-                  script: |
-                    #! /bin/bash
+      environment: 'TEST'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: ExtractFiles@1
+              displayName: 'Extract Selenium Tests'
+              inputs:
+                archiveFilePatterns: '$(Pipeline.Workspace)/drop-selenium/$(Build.BuildId)-selenium.zip'
+                destinationFolder: '$(Pipeline.Workspace)/selenium'
+                cleanDestinationFolder: false
+                overwriteExistingFiles: true
+            - task: Bash@3
+              displayName: 'Install Selenium Packages'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  #! /bin/bash
+                
+                  sudo apt-get upgrade -y
+                  sudo apt-get install python3-pip -y
+                  sudo apt-get install unzip -y
+                  sudo apt-get install -y chromium-browser
+                  sudo apt-get install -y expect
+                  pip3 install selenium
+            - task: Bash@3
+              displayName: 'Run Selenium Test'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  #! /bin/bash
 
-                    cd $(Pipeline.Workspace)/selenium
-                    mkdir -p ~/vmlogs
-                    unbuffer python3 login.py | tee -a ~/vmlogs/log.txt
+                  cd $(Pipeline.Workspace)/selenium
+                  mkdir -p ~/vmlogs
+                  unbuffer python3 login.py | tee -a ~/vmlogs/log.txt
