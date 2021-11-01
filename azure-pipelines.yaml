@@ -152,7 +152,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/report.csv -e -o automatedtesting/jmeter/report
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/report.csv -e -o automatedtesting/jmeter/report
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Endurance Test Report'
           inputs:
