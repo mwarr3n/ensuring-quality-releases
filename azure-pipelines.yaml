@@ -150,9 +150,9 @@ stages:
         - task: Bash@3
           displayName: 'JMeter Endurance Test'
           inputs:
-            targetType: 'inline'
+            targetType: 'filepath'
             script: |
-              jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
+              jmeter -n -t -e -o automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Endurance Test Report'
           inputs:
@@ -162,9 +162,9 @@ stages:
         - task: Bash@3
           displayName: 'JMeter Stress Test'
           inputs:
-            targetType: 'inline'
+            targetType: 'filepath'
             script: |
-              jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
+              jmeter -n -t -e -o automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
 
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Stress Test Report'
