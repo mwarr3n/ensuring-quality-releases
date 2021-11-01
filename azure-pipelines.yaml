@@ -169,5 +169,5 @@ stages:
           displayName: 'Jmeter'
           inputs:
             ArtifactName: 'JMeter Stress Test Report'
-            PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/report-stress/'
+            PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
 
