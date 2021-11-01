@@ -152,7 +152,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/endurance-.jtl -e -o automatedtesting/jmeter/endurance-report
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/log-endurance-.jtl -e -o automatedtesting/jmeter/report-endurance
         # - task: PublishBuildArtifacts@1
         #   displayName: 'Publish Endurance Test Report'
         #   inputs:
@@ -164,9 +164,9 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/stress.jtl -e -o automatedtesting/jmeter/stress-report
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/log-stress.jtl -e -o automatedtesting/jmeter/report-stress
         - task: PublishBuildArtifacts@1
-          displayName: 'Publish Stress Test Report'
+          displayName: 'Jmeter'
           inputs:
             ArtifactName: 'JMeter Stress Test Report'
             PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/'
