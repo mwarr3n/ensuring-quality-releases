@@ -148,7 +148,7 @@ stages:
           inputs:
             jmeterVersion: '5.4.1'
         - task: Bash@3
-          displayName: 'Run Jmeter test'
+          displayName: 'Jmeter Endurance'
           inputs:
             targetType: 'inline'
             script: |
@@ -156,5 +156,5 @@ stages:
         - task: PublishPipelineArtifact@1
           displayName: Publish Jmeter Report
           inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report'
+            targetPath: 'automatedtesting/jmeter/report'
             artifact: 'Jmeter Report'
