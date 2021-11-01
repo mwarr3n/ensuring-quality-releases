@@ -146,7 +146,7 @@ stages:
 #           inputs:
 #             ArtifactName: 'JMeter Stress Test Report'
 #             PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
-- stage: Test
+- stage: Deploy
   jobs:  
     - deployment: VMDeploy
       displayName: 'Deploy VM'
