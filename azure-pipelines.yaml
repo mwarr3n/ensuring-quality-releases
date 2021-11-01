@@ -150,25 +150,25 @@ stages:
         - task: Bash@3
           displayName: 'JMeter Endurance Test'
           inputs:
-            targetType: 'filepath'
+            targetType: 'inline'
             script: |
-              jmeter -n -t -e -o automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/report.csv -e -o automatedtesting/jmeter/report
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Endurance Test Report'
           inputs:
             artifact: 'JMeter Endurance Test Report'
-            targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/'
+            targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report/'
           
-        - task: Bash@3
-          displayName: 'JMeter Stress Test'
-          inputs:
-            targetType: 'filepath'
-            script: |
-              jmeter -n -t -e -o automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
+        # - task: Bash@3
+        #   displayName: 'JMeter Stress Test'
+        #   inputs:
+        #     targetType: 'filepath'
+        #     script: |
+        #       jmeter -n -t -e -o automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
 
-        - task: PublishPipelineArtifact@1
-          displayName: 'Publish Stress Test Report'
-          inputs:
-            artifact: 'JMeter Stress Test Report'
-            targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/'
+        # - task: PublishPipelineArtifact@1
+        #   displayName: 'Publish Stress Test Report'
+        #   inputs:
+        #     artifact: 'JMeter Stress Test Report'
+        #     targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/'
 
