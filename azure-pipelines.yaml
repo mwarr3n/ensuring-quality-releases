@@ -104,7 +104,7 @@ stages:
                 azureSubscription: 'azure-sc'
                 appName: 'udacity-p3-AppService'
                 appType: webApp
-                package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+                package: $(Pipeline.Workspace)/fakerestapi/$(Build.BuildId)-fakerestapi.zip
 
 
 # name: Azure Pipelines
