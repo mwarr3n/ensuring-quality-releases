@@ -115,29 +115,29 @@ stages:
 
 - stage: Test
   jobs:
-    - job: postmanTest
-      pool:
-        vmImage: 'Ubuntu-latest'
-      steps:
-      - task: CmdLine@2
-        displayName: Install Newman
-        inputs:
-          script: | 
-            sudo npm install -g newman
-            sudo npm install -g newman-reporter-junitfull
-          workingDirectory: $(System.DefaultWorkingDirectory)
-      - task: CmdLine@2
-        displayName: Run Regression Tests
-        continueOnError: true
-        inputs:
-          script: | 
-            newman run StarterAPIs.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
-          workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-      - task: PublishTestResults@2
-        inputs:
-          testRunTitle: 'Regression Test'
-          testResultsFormat: JUnit
-          testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
+    # - job: postmanTest
+    #   pool:
+    #     vmImage: 'Ubuntu-latest'
+    #   steps:
+      # - task: CmdLine@2
+      #   displayName: Install Newman
+      #   inputs:
+      #     script: | 
+      #       sudo npm install -g newman
+      #       sudo npm install -g newman-reporter-junitfull
+      #     workingDirectory: $(System.DefaultWorkingDirectory)
+      # - task: CmdLine@2
+      #   displayName: Run Regression Tests
+      #   continueOnError: true
+      #   inputs:
+      #     script: | 
+      #       newman run StarterAPIs.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
+      #     workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+      # - task: PublishTestResults@2
+      #   inputs:
+      #     testRunTitle: 'Regression Test'
+      #     testResultsFormat: JUnit
+      #     testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
 
     - job: JmeterTest
       pool:
@@ -156,21 +156,18 @@ stages:
         - task: PublishBuildArtifacts@1
           displayName: 'Publish Endurance Test Report'
           inputs:
-            # artifact: 'JMeter Endurance Test Report'
             ArtifactName: 'JMeter Endurance Test'
             PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report/'
-            # targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report/'
           
-        # - task: Bash@3
-        #   displayName: 'JMeter Stress Test'
-        #   inputs:
-        #     targetType: 'filepath'
-        #     script: |
-        #       jmeter -n -t -e -o automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
-
-        # - task: PublishPipelineArtifact@1
-        #   displayName: 'Publish Stress Test Report'
-        #   inputs:
-        #     artifact: 'JMeter Stress Test Report'
-        #     targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/'
+        - task: Bash@3
+          displayName: 'JMeter Stress Test'
+          inputs:
+            targetType: 'filepath'
+            script: |
+              jmeter -n -t -e -o automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Stress Test Report'
+          inputs:
+            ArtifactName: 'JMeter Stress Test Report'
+            PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report/'
 
