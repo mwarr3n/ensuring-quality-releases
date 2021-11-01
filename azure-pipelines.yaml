@@ -153,10 +153,11 @@ stages:
             targetType: 'inline'
             script: |
               jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/report.csv -e -o automatedtesting/jmeter/report
-        - task: PublishPipelineArtifact@1
+        - task: PublishBuildArtifacts@1
           displayName: 'Publish Endurance Test Report'
           inputs:
-            artifact: 'JMeter Endurance Test Report'
+            # artifact: 'JMeter Endurance Test Report'
+            ArtifactName: 'JMeter Endurance Test'
             targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report/'
           
         # - task: Bash@3
