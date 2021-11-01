@@ -148,13 +148,16 @@ stages:
           inputs:
             jmeterVersion: '5.4.1'
         - task: Bash@3
-          displayName: 'Jmeter Endurance'
+          displayName: 'JMeter Endurance Test'
           inputs:
             targetType: 'inline'
             script: |
               jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
-        - task: PublishPipelineArtifact@1
-          displayName: Publish Jmeter Report
+
+        - task: Bash@3
+          displayName: 'JMeter Stress Test'
           inputs:
-            targetPath: 'automatedtesting/jmeter/report'
-            artifact: 'Jmeter Report'
+            targetType: 'inline'
+            script: |
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv
+
