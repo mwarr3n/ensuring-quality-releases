@@ -139,4 +139,18 @@ stages:
           testResultsFormat: JUnit
           testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
 
-
+    - job: JmeterTest
+      pool:
+        vmImage: 'Ubuntu-latest'
+      steps:
+        - task: JMeterInstaller@0
+          displayName: 'Install JMeter 5.4.1'
+          inputs:
+            jmeterVersion: '5.4.1'
+        - task: Bash@3
+          displayName: 'Run Jmeter test'
+          inputs:
+            targetType: 'inline'
+            script: |
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx
+              Jresdir=automatedtesting/jmeter/pages.csv
