@@ -15,79 +15,79 @@ stages:
         sshPublicKey: '$(PUBLIC_KEY)'
         sshKeySecureFile: 'id_rsa'
 
-#     - task: TerraformInstaller@0
-#       displayName: 'Terraform Install'
-#       inputs:
-#         terraformVersion: '1.0.10'
-#     - task: TerraformTaskV2@2
-#       displayName: 'Terraform Init'
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'init'
-#         backendAzureRmResourceGroupName: 'tfstate'
-#         backendAzureRmStorageAccountName: 'tfstate30471'
-#         backendAzureRmContainerName: 'tfstate'
-#         backendAzureRmKey: '$(ACCESS_KEY)'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-#         backendServiceArm: 'terraform-sc'
-#     - task: TerraformTaskV2@2
-#       displayName: 'Terraform Validate'
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'validate'
-#     - task: TerraformTaskV2@2
-#       displayName: 'Terraform Destroy'
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'destroy'
-#         commandOptions: '-var="public_key=$(PUBLIC_KEY)'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-#         environmentServiceNameAzureRM: 'terraform-sc'
-#     - task: TerraformTaskV2@2
-#       displayName: 'Terraform Plan'
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'plan'
-#         commandOptions: '-var="public_key=$(PUBLIC_KEY)'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-#         environmentServiceNameAzureRM: 'terraform-sc'
-#     - task: TerraformTaskV2@2
-#       displayName: 'Terraform Apply'
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'apply'
-#         commandOptions: '-var="public_key=$(PUBLIC_KEY)'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-#         environmentServiceNameAzureRM: 'terraform-sc'
+    - task: TerraformInstaller@0
+      displayName: 'Terraform Install'
+      inputs:
+        terraformVersion: '1.0.10'
+    - task: TerraformTaskV2@2
+      displayName: 'Terraform Init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendAzureRmResourceGroupName: 'tfstate'
+        backendAzureRmStorageAccountName: 'tfstate30471'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: '$(ACCESS_KEY)'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+        backendServiceArm: 'terraform-sc'
+    - task: TerraformTaskV2@2
+      displayName: 'Terraform Validate'
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+    - task: TerraformTaskV2@2
+      displayName: 'Terraform Destroy'
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
+        commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+        environmentServiceNameAzureRM: 'terraform-sc'
+    - task: TerraformTaskV2@2
+      displayName: 'Terraform Plan'
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+        environmentServiceNameAzureRM: 'terraform-sc'
+    - task: TerraformTaskV2@2
+      displayName: 'Terraform Apply'
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+        environmentServiceNameAzureRM: 'terraform-sc'
 
-#     - task: ArchiveFiles@2
-#       displayName: 'Archive FakeRestAPI'
-#       inputs:
-#         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
-#         includeRootFolder: false
-#         archiveType: 'zip'
-#         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
-#     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-#       displayName: 'Upload Package'
-#       artifact: drop-fakerestapi
+    - task: ArchiveFiles@2
+      displayName: 'Archive FakeRestAPI'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+      displayName: 'Upload Package'
+      artifact: drop-fakerestapi
 
-# - stage:
-#   jobs:
-#   - deployment: FakeRestAPI
-#     pool:
-#       vmImage: 'Ubuntu-latest'
-#     environment: 'TEST'
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: AzureWebApp@1
-#             displayName: 'Deploy Azure Web App'
-#             inputs:
-#               azureSubscription: 'azure-sc'
-#               appName: 'udacity-p3-AppService'
-#               appType: webApp
-#               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+- stage: Deploy
+  jobs:
+  - deployment: FakeRestAPI
+    pool:
+      vmImage: 'Ubuntu-latest'
+    environment: 'TEST'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: 'azure-sc'
+              appName: 'udacity-p3-AppService'
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   
           # - deployment: VMDeploy
           #   displayName: 'Deploy Selenium'
@@ -115,29 +115,29 @@ stages:
 
 - stage: Test
   jobs:
-    # - job: postmanTest
-    #   pool:
-    #     vmImage: 'Ubuntu-latest'
-    #   steps:
-      # - task: CmdLine@2
-      #   displayName: Install Newman
-      #   inputs:
-      #     script: | 
-      #       sudo npm install -g newman
-      #       sudo npm install -g newman-reporter-junitfull
-      #     workingDirectory: $(System.DefaultWorkingDirectory)
-      # - task: CmdLine@2
-      #   displayName: Run Regression Tests
-      #   continueOnError: true
-      #   inputs:
-      #     script: | 
-      #       newman run StarterAPIs.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
-      #     workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-      # - task: PublishTestResults@2
-      #   inputs:
-      #     testRunTitle: 'Regression Test'
-      #     testResultsFormat: JUnit
-      #     testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
+    - job: postmanTest
+      pool:
+        vmImage: 'Ubuntu-latest'
+      steps:
+      - task: CmdLine@2
+        displayName: Install Newman
+        inputs:
+          script: | 
+            sudo npm install -g newman
+            sudo npm install -g newman-reporter-junitfull
+          workingDirectory: $(System.DefaultWorkingDirectory)
+      - task: CmdLine@2
+        displayName: Run Regression Tests
+        continueOnError: true
+        inputs:
+          script: | 
+            newman run StarterAPIs.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
+          workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+      - task: PublishTestResults@2
+        inputs:
+          testRunTitle: 'Regression Test'
+          testResultsFormat: JUnit
+          testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
 
     - job: JmeterTest
       pool:
@@ -170,4 +170,3 @@ stages:
           inputs:
             ArtifactName: 'JMeter Stress Test Report'
             PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
-
