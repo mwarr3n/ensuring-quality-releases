@@ -158,7 +158,8 @@ stages:
           inputs:
             # artifact: 'JMeter Endurance Test Report'
             ArtifactName: 'JMeter Endurance Test'
-            targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report/'
+            PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report/'
+            # targetPath: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report/'
           
         # - task: Bash@3
         #   displayName: 'JMeter Stress Test'
