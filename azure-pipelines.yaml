@@ -152,7 +152,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/endurance-.jtl -e -o automatedtesting/jmeter/reports/endurance
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/endurance-.jtl -e -o automatedtesting/jmeter/endurance-report
         # - task: PublishBuildArtifacts@1
         #   displayName: 'Publish Endurance Test Report'
         #   inputs:
@@ -164,7 +164,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/stress.jtl -e -o automatedtesting/jmeter/reports/stress
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/stress.jtl -e -o automatedtesting/jmeter/stress-report
         - task: PublishBuildArtifacts@1
           displayName: 'Publish Stress Test Report'
           inputs:
