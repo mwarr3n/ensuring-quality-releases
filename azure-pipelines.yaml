@@ -185,24 +185,23 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: |
+                  #! /bin/bash                
+                  sudo apt-get upgrade -y
+                  sudo apt-get install python3-pip -y
+                  sudo apt-get install unzip -y
+                  sudo apt-get install -y chromium-browser
+                  sudo apt-get install -y expect
+                  pip3 install selenium
+            - task: Bash@3
+              displayName: 'Run Selenium Test'
+              inputs:
+                targetType: 'inline'
+                script: |
                   #! /bin/bash
-                
-#                   sudo apt-get upgrade -y
-#                   sudo apt-get install python3-pip -y
-#                   sudo apt-get install unzip -y
-#                   sudo apt-get install -y chromium-browser
-#                   sudo apt-get install -y expect
-#                   pip3 install selenium
-#             - task: Bash@3
-#               displayName: 'Run Selenium Test'
-#               inputs:
-#                 targetType: 'inline'
-#                 script: |
-#                   #! /bin/bash
 
-#                   cd $(Pipeline.Workspace)/selenium
-#                   mkdir -p ~/vmlogs
-#                   unbuffer python3 login.py | tee -a ~/vmlogs/log.txt
+                  cd $(Pipeline.Workspace)/selenium
+                  mkdir -p ~/vmlogs
+                  unbuffer python3 login.py | tee -a ~/vmlogs/log.txt
 
 
 
