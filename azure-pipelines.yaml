@@ -2,18 +2,127 @@ name: Azure Pipelines
 variables:
   python.version: '3.7.6'
 stages:
-- stage: Build
+- stage: Infrastructure
   jobs:
-  - job: infrastructure
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    # Needed for Terraform VM deployment
-    - task: InstallSSHKey@0
-      inputs:
-        knownHostsEntry: '$(KNOWN_HOST_ENTRY)'
-        sshPublicKey: '$(PUBLIC_KEY)'
-        sshKeySecureFile: 'id_rsa'
+    - job: Infrastructure
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+        - task: InstallSSHKey@0
+          inputs:
+            knownHostsEntry: '$(KNOWN_HOST_ENTRY)'
+            sshPublicKey: '$(PUBLIC_KEY)'
+            sshKeySecureFile: 'id_rsa'
+        - task: TerraformInstaller@0
+          displayName: 'Terraform Install'
+          inputs:
+            terraformVersion: '1.0.10'
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform Init'
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            backendAzureRmResourceGroupName: 'tfstate'
+            backendAzureRmStorageAccountName: 'tfstate30471'
+            backendAzureRmContainerName: 'tfstate'
+            backendAzureRmKey: '$(ACCESS_KEY)'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            backendServiceArm: 'terraform-sc'
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform Validate'
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+        # - task: TerraformTaskV2@2
+        #   displayName: 'Terraform Destroy'
+        #   inputs:
+        #     provider: 'azurerm'
+        #     command: 'destroy'
+        #     commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+        #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+        #     environmentServiceNameAzureRM: 'terraform-sc'
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform Plan'
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            environmentServiceNameAzureRM: 'terraform-sc'
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform Apply'
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            environmentServiceNameAzureRM: 'terraform-sc'
+ 
+- stage: Packaging
+  dependsOn: Infrastructure
+  jobs:
+    - job: Packaging
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+        - task: ArchiveFiles@2
+          displayName: 'Archive FakeRestAPI'
+          inputs:
+            rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+        - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+          displayName: 'Publish Package'
+          artifact: fakerestapi
+        - task: ArchiveFiles@2
+          displayName: 'Archive Selenium'
+          inputs:
+            rootFolderOrFile: 'automatedtesting/selenium'
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
+        - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip
+          displayName: 'Publish Selenium Package'
+          artifact: selenium     
+
+- stage: Deploy
+  dependsOn: Packaging
+  jobs:
+    # - job: Deploy
+    - deployment: FakeRestAPI
+      pool:
+        vmImage: 'Ubuntu-latest'
+      environment: 'TEST'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: AzureWebApp@1
+              displayName: 'Deploy Azure Web App'
+              inputs:
+                azureSubscription: 'azure-sc'
+                appName: 'udacity-p3-AppService'
+                appType: webApp
+                package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+
+
+# name: Azure Pipelines
+# variables:
+#   python.version: '3.7.6'
+# stages:
+# - stage: SETUP
+#   jobs:
+#   - job: infrastructure
+#     pool:
+#       vmImage: ubuntu-latest
+#     steps:
+#     # Needed for Terraform VM deployment
+#     - task: InstallSSHKey@0
+#       inputs:
+#         knownHostsEntry: '$(KNOWN_HOST_ENTRY)'
+#         sshPublicKey: '$(PUBLIC_KEY)'
+#         sshKeySecureFile: 'id_rsa'
 
 #     - task: TerraformInstaller@0
 #       displayName: 'Terraform Install'
@@ -71,16 +180,16 @@ stages:
 #       displayName: 'Publish Package'
 #       artifact: fakerestapi
 
-    - task: ArchiveFiles@2
-      displayName: 'Archive Selenium'
-      inputs:
-        rootFolderOrFile: 'automatedtesting/selenium'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip
-      displayName: 'Publish Selenium Package'
-      artifact: selenium
+    # - task: ArchiveFiles@2
+    #   displayName: 'Archive Selenium'
+    #   inputs:
+    #     rootFolderOrFile: 'automatedtesting/selenium'
+    #     includeRootFolder: false
+    #     archiveType: 'zip'
+    #     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip'
+    # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip
+    #   displayName: 'Publish Selenium Package'
+    #   artifact: selenium
 
 # - stage: Deploy
 #   jobs:
@@ -157,44 +266,44 @@ stages:
 #           inputs:
 #             ArtifactName: 'JMeter Stress Test Report'
 #             PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
-- stage: TEST
-  jobs:  
-    - deployment: VMDeploy
-      displayName: 'Deploy VM'
-      pool:
-        vmImage: 'ubuntu-latest'
-      environment: 'TEST'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - task: ExtractFiles@1
-              displayName: 'Extract Selenium Tests'
-              inputs:
-                archiveFilePatterns: '$(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium.zip'
-                destinationFolder: '$(Pipeline.Workspace)/selenium'
-                cleanDestinationFolder: false
-                overwriteExistingFiles: true
-            - task: Bash@3
-              displayName: 'Install Selenium Packages'
-              inputs:
-                targetType: 'inline'
-                script: |
-                  #! /bin/bash
+# - stage: TEST
+#   jobs:  
+#     - deployment: VMDeploy
+#       displayName: 'Deploy VM'
+#       pool:
+#         vmImage: 'ubuntu-latest'
+#       environment: 'TEST'
+#       strategy:
+#         runOnce:
+#           deploy:
+#             steps:
+#             - task: ExtractFiles@1
+#               displayName: 'Extract Selenium Tests'
+#               inputs:
+#                 archiveFilePatterns: '$(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium.zip'
+#                 destinationFolder: '$(Pipeline.Workspace)/selenium'
+#                 cleanDestinationFolder: false
+#                 overwriteExistingFiles: true
+#             - task: Bash@3
+#               displayName: 'Install Selenium Packages'
+#               inputs:
+#                 targetType: 'inline'
+#                 script: |
+#                   #! /bin/bash
                 
-                  sudo apt-get upgrade -y
-                  sudo apt-get install python3-pip -y
-                  sudo apt-get install unzip -y
-                  sudo apt-get install -y chromium-browser
-                  sudo apt-get install -y expect
-                  pip3 install selenium
-            - task: Bash@3
-              displayName: 'Run Selenium Test'
-              inputs:
-                targetType: 'inline'
-                script: |
-                  #! /bin/bash
+#                   sudo apt-get upgrade -y
+#                   sudo apt-get install python3-pip -y
+#                   sudo apt-get install unzip -y
+#                   sudo apt-get install -y chromium-browser
+#                   sudo apt-get install -y expect
+#                   pip3 install selenium
+#             - task: Bash@3
+#               displayName: 'Run Selenium Test'
+#               inputs:
+#                 targetType: 'inline'
+#                 script: |
+#                   #! /bin/bash
 
-                  cd $(Pipeline.Workspace)/selenium
-                  mkdir -p ~/vmlogs
-                  unbuffer python3 login.py | tee -a ~/vmlogs/log.txt
+#                   cd $(Pipeline.Workspace)/selenium
+#                   mkdir -p ~/vmlogs
+#                   unbuffer python3 login.py | tee -a ~/vmlogs/log.txt
