@@ -89,8 +89,8 @@ stages:
 #               appType: webApp
 #               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
 
-- stage: Test
-  jobs:
+# - stage: Test
+  # jobs:
     # - job: postmanTest
 #       pool:
 #         vmImage: 'Ubuntu-latest'
@@ -146,10 +146,12 @@ stages:
 #           inputs:
 #             ArtifactName: 'JMeter Stress Test Report'
 #             PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
+- stage: Test
+  jobs:  
     - deployment: VMDeploy
       displayName: 'Deploy VM'
       pool:
-        vmImage: ubuntu-latest
+        vmImage: 'ubuntu-latest'
         environment: 'TEST'
         strategy:
           runOnce:
