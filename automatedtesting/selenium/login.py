@@ -14,13 +14,13 @@ def login (user, password):
     print ('Browser started successfully. Navigating to the demo page to login.')
     driver.get('https://www.saucedemo.com/')
     
-    driver.find_element("input[id='user-name']").send_keys(user)
-    driver.find_element("input[id='password']").send_keys(password)
-    driver.find_element("login-button").click()
+    driver.find_element_by_css_selector("input[id='user-name']").send_keys(user)
+    driver.find_element_by_css_selector("input[id='password']").send_keys(password)
+    driver.find_element_by_css_selector("login-button").click()
 
     print(" User " + user + " logged in successfully!")
     
-    inventory_items = driver.find_elements_by_class_name("inventory_list")
+    inventory_items = driver.find_element_by_css_selector("inventory_list")
     print("getting inventory items")
     
     for inventory_item in inventory_items:
