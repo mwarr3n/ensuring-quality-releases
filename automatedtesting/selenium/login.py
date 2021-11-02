@@ -19,7 +19,7 @@ def login (user, password):
 	driver.find_element(By.ID, "login-button").click()
 
 	logout = driver.find_element(By.ID, 'logout_sidebar_link'.size() > 0
-	assertTrue(logout);
+# 	assertTrue(logout);
 
 	return driver
 
