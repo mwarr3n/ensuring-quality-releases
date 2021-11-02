@@ -3,9 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 
-def process_inventory_items(inventory_items, action):
-    
-
 # Start the browser and login with standard_user
 def login (user, password):
 	print ('Starting the browser...')
