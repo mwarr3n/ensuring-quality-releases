@@ -34,7 +34,7 @@ def login (user, password):
     driver.find_element(By.ID, "password").send_keys(password)
     driver.find_element(By.ID, "login-button").click()
 
-    print(" User " + user + " logged in successfully!")
+    print(user + " logged in successfully!")
 
     inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_item")
     print("getting inventory items")
@@ -42,33 +42,10 @@ def login (user, password):
 
     if inventory_items:    
         manage_cart (inventory_items, 'Add')
-#         for inventory_item in inventory_items:
-#             item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
-#             print("Found Item Name: " + item_name)
+        print("All items added to cart")
 
-#             price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
-
-#             print("adding item " + item_name)
-#             add_to_cart = price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
-        
-#         cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
-#         print("Items in cart " + cart_badge)
-#         print("All items have been added")
-#         print("******")
-        
-        for inventory_item in inventory_items:
-            item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
-            print("Found Item Name: " + item_name)
-
-            price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
-
-            print("removing item " + item_name)
-            add_to_cart = price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
-            
-#         cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge'.size() > 0   
-        
-#         if not cart_badge:
-        print("All items have been removed")
+        manage_cart (inventory_items, 'Remove')
+        print("All items removed from cart")
                                                                     
 
 login('standard_user', 'secret_sauce')
