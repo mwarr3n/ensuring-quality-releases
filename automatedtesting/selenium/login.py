@@ -22,7 +22,7 @@ def login (user, password):
 	logout = driver.find_element(By.ID, 'logout_sidebar_link'.size() > 0
 # 	assert logout == True, 'logged in successfully!'
 
-def manage_cart(inventory_items, action):
+def manage_cart (inventory_items, action):
 	for inventory_item in inventory_items:
 		item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
 		print("Selecting Item: " + item_name)
@@ -33,7 +33,7 @@ def manage_cart(inventory_items, action):
 		price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
 		print("------")
            
-def main():
+def main ():
 	driver = login('standard_user', 'secret_sauce')
     
 	inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_item")
