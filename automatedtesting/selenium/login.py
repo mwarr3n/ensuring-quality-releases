@@ -2,7 +2,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
-import org.testng.Assert;
 
 # Start the browser and login with standard_user
 def login (user, password):
@@ -44,7 +43,8 @@ def main ():
 	manage_cart(inventory_items,'Add')
 
 	cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
-# 	assert cart_badge == len(inventory_items), 'All Items added to cart'
+	assert cart_badge == len(inventory_items) 
+	print('All Items added to cart')
 
 	manage_cart(inventory_items,'Remove')
 
