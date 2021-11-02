@@ -25,8 +25,8 @@ def login (user, password):
     print ('Browser started successfully. Navigating to the demo page to login.')
     driver.get('https://www.saucedemo.com/')
     
-    driver.find_element(By.CSS_SELECTOR, "input[id='user-name']").send_keys(user)
-    driver.find_element(By.CSS_SELECTOR, "input[id='password']").send_keys(password)
+    driver.find_element(By.ID, "user-name").send_keys(user)
+    driver.find_element(By.ID, "password").send_keys(password)
     driver.find_element(By.ID, "login-button").click()
 
     print(" User " + user + " logged in successfully!")
