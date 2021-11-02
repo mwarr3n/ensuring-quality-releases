@@ -25,7 +25,6 @@ def login (user, password):
     print("getting inventory items")
     
     if inventory_items:
-        print("Found " + str(inventory_items.length))
         
         for inventory_item in inventory_items:
             item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
