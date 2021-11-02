@@ -21,12 +21,18 @@ def login (user, password):
 
     print(" User " + user + " logged in successfully!")
     
-    inventory_items = driver.find_element(By.CLASS_NAME, "inventory_list")
+    inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_list")
     print("getting inventory items")
     
     for inventory_item in inventory_items:
         item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
-        print(item_name)
+        print("Item Name:" + item_name)
+        
+        price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
+        
+        print("Adding item " + item_name + " to cart")
+        add_to_cart = price_bar_element.find_element(By.CLASS_NAME, "btn_inventory").click()
+        
 
     
 login('standard_user', 'secret_sauce')
