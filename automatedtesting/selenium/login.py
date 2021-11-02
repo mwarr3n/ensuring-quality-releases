@@ -22,6 +22,7 @@ def login (user, password):
     
     inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_item")
     print("getting inventory items")
+    print(inventory_items.length)
 
     if inventory_items:    
         for inventory_item in inventory_items:
@@ -33,9 +34,8 @@ def login (user, password):
             print("adding item " + item_name)
             add_to_cart = price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
         
-        print("All items added to cart")
         cartBadge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
-        print(cartBadge)
+        print("Items in cart " + icartBadge)
         
         for inventory_item in inventory_items:
             item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
@@ -46,7 +46,8 @@ def login (user, password):
             print("removing item " + item_name)
             add_to_cart = price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
         
-        print("All items removed from cart")
+        cartBadge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
+        print("Items in cart " + icartBadge)
 
 login('standard_user', 'secret_sauce')
 
