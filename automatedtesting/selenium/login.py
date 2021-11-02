@@ -7,12 +7,12 @@ def manage_cart (inventory_items, action):
 								 
     for inventory_item in inventory_items:
         item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
-		print("Selecting Item: " + item_name)
+	print("Selecting Item: " + item_name)
 
-		price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
+	price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
 
-		print(action + "item " + item_name)
-		price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
+	print(action + "item " + item_name)
+	price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
 
 # Start the browser and login with standard_user
 def login (user, password):
