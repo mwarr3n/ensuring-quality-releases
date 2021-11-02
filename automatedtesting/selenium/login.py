@@ -4,17 +4,17 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 
 def manage_cart (inventory_items, action):
-								 
-    for inventory_item in inventory_items:
+	
+	for inventory_item in inventory_items:
 		item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
 
 		price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
 
 		if action == "Add":
-			print("Adding item " + item_name + " to cart")
+			print("Adding items to cart")
 		else: 
-			print("Removing item " + item_name + " from cart")
-
+			print("Removing items from cart")
+		print("    " + item_name)
 		price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
 	
 	
