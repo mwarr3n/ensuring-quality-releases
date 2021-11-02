@@ -19,13 +19,13 @@ def login (user, password):
 	driver.find_element(By.ID, "login-button").click()
 
 	logout = driver.find_element(By.ID, 'logout_sidebar_link'.size() > 0
-# 	assert logout == False
-# 	driver.quit()
+	assertTrue(logout);
 
 	return driver
 
 
 def manage_cart (inventory_items, action):
+								 
 	for inventory_item in inventory_items:
 		item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
 		print("Selecting Item: " + item_name)
@@ -44,7 +44,7 @@ def main ():
 	print("Items found: " + str(len(inventory_items)))
 
 	if inventory_items:
-	manage_cart(inventory_items,'Add')
+		manage_cart(inventory_items,'Add')
 
 	cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
 # 	assert cart_badge == len(inventory_items) 
