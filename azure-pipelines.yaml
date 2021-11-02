@@ -59,7 +59,7 @@ stages:
 #             environmentServiceNameAzureRM: 'terraform-sc'
  
 - stage: Packaging
-  dependsOn: Infrastructure
+  # dependsOn: Infrastructure
   jobs:
     - job: Packaging
       pool:
