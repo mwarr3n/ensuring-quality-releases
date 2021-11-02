@@ -3,6 +3,18 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 
+def manage_cart (inventory_items, action):
+								 
+	for inventory_item in inventory_items:
+		item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
+		print("Selecting Item: " + item_name)
+
+		price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
+
+		print(action + "item " + item_name)
+		price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
+		print("------")
+		
 # Start the browser and login with standard_user
 def login (user, password):
 	print ('Starting the browser...')
@@ -20,25 +32,7 @@ def login (user, password):
 
 	logout = driver.find_element(By.ID, 'logout_sidebar_link'.size() > 0
 # 	assertTrue(logout);
-
-	return driver
-
-
-def manage_cart (inventory_items, action):
 								 
-	for inventory_item in inventory_items:
-		item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
-		print("Selecting Item: " + item_name)
-
-		price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
-
-		print(action + "item " + item_name)
-		price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
-		print("------")
-
-def main ():
-	driver = login('standard_user', 'secret_sauce')
-
 	inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_item")
 	print("getting inventory items")
 	print("Items found: " + str(len(inventory_items)))
@@ -54,7 +48,4 @@ def main ():
 
 	cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge'.size() > 0
 # 	assert cart_badge == False, 'All Items removed to cart'
-					 
-if __name__ == '__main__':
-	main()
 
