@@ -22,7 +22,7 @@ def login (user, password):
     
     inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_item")
     print("getting inventory items")
-    print(inventory_items.length)
+    print("Items found: " + str(len(inventory_items)))
 
     if inventory_items:    
         for inventory_item in inventory_items:
