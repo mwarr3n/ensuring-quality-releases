@@ -5,15 +5,15 @@ from selenium.webdriver.common.by import By
 
 def manage_cart (inventory_items, action):
 
+    if action == "Add":
+        print("Adding items to cart")
+    else: 
+        print("Removing items from cart")
+
     for inventory_item in inventory_items:
         item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
 
         price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
-
-        if action == "Add":
-            print("Adding items to cart")
-        else: 
-            print("Removing items from cart")
 
         print("    " + item_name)
         price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
@@ -41,7 +41,7 @@ def login (user, password):
     print("Items found: " + str(len(inventory_items)))
 
     if inventory_items:    
-# 	manage_cart (inventory_items, 'Add')
+        manage_cart (inventory_items, 'Add')
 #         for inventory_item in inventory_items:
 #             item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
 #             print("Found Item Name: " + item_name)
