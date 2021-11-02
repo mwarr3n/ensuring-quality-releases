@@ -20,16 +20,9 @@ def login (user, password):
 
     print(" User " + user + " logged in successfully!")
     
-#     inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_list")
-#     print("getting inventory items")
-
-def get_inventory():
     inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_list")
     print("getting inventory items")
-    
-    return inventory_items
 
-def process_items(inventory_items, action):
     if inventory_items:    
         for inventory_item in inventory_items:
             item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
@@ -37,11 +30,8 @@ def process_items(inventory_items, action):
 
             price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
 
-            print(action + " item " + item_name)
+            print("adding item " + item_name)
             add_to_cart = price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
 
 login('standard_user', 'secret_sauce')
-
-process_items(get_inventory(), 'ADD')
-# process_items(get_inventory(), 'REMOVE')
 
