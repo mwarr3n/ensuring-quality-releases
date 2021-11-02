@@ -21,7 +21,7 @@ def login (user, password):
 
     print(" User " + user + " logged in successfully!")
     
-    inventory_items = driver.find_element(By.CSS_SELECTOR, "inventory_list")
+    inventory_items = driver.find_element(By.CLASS_NAME, "inventory_list")
     print("getting inventory items")
     
     for inventory_item in inventory_items:
