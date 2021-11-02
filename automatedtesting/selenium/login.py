@@ -21,21 +21,21 @@ def manage_cart (inventory_items, action):
 	
 # Start the browser and login with standard_user
 def login (user, password):
-	print ('Starting the browser...')
+    print ('Starting the browser...')
     # --uncomment when running in Azure DevOps.
     options = ChromeOptions()
     options.add_argument("--headless") 
     driver = webdriver.Chrome(options=options)
-#     driver = webdriver.Chrome()
+    #     driver = webdriver.Chrome()
     print ('Browser started successfully. Navigating to the demo page to login.')
     driver.get('https://www.saucedemo.com/')
-    
+
     driver.find_element(By.ID, "user-name").send_keys(user)
     driver.find_element(By.ID, "password").send_keys(password)
     driver.find_element(By.ID, "login-button").click()
 
     print(" User " + user + " logged in successfully!")
-    
+
     inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_item")
     print("getting inventory items")
     print("Items found: " + str(len(inventory_items)))
