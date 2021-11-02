@@ -17,11 +17,11 @@ def login (user, password):
     
     driver.find_element(By.CSS_SELECTOR, "input[id='user-name']").send_keys(user)
     driver.find_element(By.CSS_SELECTOR, "input[id='password']").send_keys(password)
-    driver.find_element(By.CSS_SELECTOR, "login-button").click()
+    driver.find_element(By.ID, "login-button").click()
 
     print(" User " + user + " logged in successfully!")
     
-#     inventory_items = driver.find_element_by_css_selector("inventory_list")
+#     inventory_items = driver.find_element(By.CSS_SELECTOR, "inventory_list")
 #     print("getting inventory items")
     
 #     for inventory_item in inventory_items:
