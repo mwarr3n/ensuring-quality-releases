@@ -31,21 +31,20 @@ def login (user, password):
 	driver.find_element(By.ID, "login-button").click()
 
 	logout = driver.find_element(By.ID, 'logout_sidebar_link'.size() > 0
-# 	assertTrue(logout);
-								 
+
 	inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_item")
 	print("getting inventory items")
 	print("Items found: " + str(len(inventory_items)))
 
-	if inventory_items:
-		manage_cart(inventory_items,'Add')
+# 	if inventory_items:
+# 		manage_cart(inventory_items,'Add')
 
-	cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
-# 	assert cart_badge == len(inventory_items) 
-# 	print('All Items added to cart')
+# 	cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
+# # 	assert cart_badge == len(inventory_items) 
+# # 	print('All Items added to cart')
 
-	manage_cart(inventory_items,'Remove')
+# 	manage_cart(inventory_items,'Remove')
 
-	cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge'.size() > 0
-# 	assert cart_badge == False, 'All Items removed to cart'
+# 	cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge'.size() > 0
+# # 	assert cart_badge == False, 'All Items removed to cart'
 
