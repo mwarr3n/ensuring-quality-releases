@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 
-
 # Start the browser and login with standard_user
 def login (user, password):
     print ('Starting the browser...')
@@ -23,19 +22,26 @@ def login (user, password):
     
     inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_list")
     print("getting inventory items")
+
+def get_inventory():
+    inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_list")
+    print("getting inventory items")
     
-    if inventory_items:
-        
+    return inventory_items
+
+def add_remove(inventory_items, action):
+    if inventory_items:    
         for inventory_item in inventory_items:
             item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
             print("Found Item Name: " + item_name)
 
             price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
 
-            print("Adding item " + item_name + " to cart")
+            print(action + " item " + item_name)
             add_to_cart = price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
-        
 
-    
 login('standard_user', 'secret_sauce')
+
+add_remove(get_inventory(), 'ADD')
+add_remove(get_inventory(), 'REMOVE')
 
