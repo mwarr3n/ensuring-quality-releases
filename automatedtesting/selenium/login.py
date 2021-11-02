@@ -19,8 +19,8 @@ def login (user, password):
 	driver.find_element(By.ID, "login-button").click()
 
 	logout = driver.find_element(By.ID, 'logout_sidebar_link'.size() > 0
-	assert logout == False
-	driver.quit()
+# 	assert logout == False
+# 	driver.quit()
 
 	return driver
 
@@ -47,8 +47,8 @@ def main ():
 	manage_cart(inventory_items,'Add')
 
 	cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
-	assert cart_badge == len(inventory_items) 
-	print('All Items added to cart')
+# 	assert cart_badge == len(inventory_items) 
+# 	print('All Items added to cart')
 
 	manage_cart(inventory_items,'Remove')
 
