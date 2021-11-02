@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 def manage_cart (inventory_items, action):
 								 
     for inventory_item in inventory_items:
-        item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
+		item_name = inventory_item.find_element(By.CLASS_NAME, "inventory_item_label").find_element(By.CLASS_NAME, "inventory_item_name").text
 
 		price_bar = inventory_item.find_element(By.CLASS_NAME, "pricebar")
 
@@ -14,13 +14,13 @@ def manage_cart (inventory_items, action):
 			print("Adding item " + item_name + " to cart")
 		else: 
 			print("Removing item " + item_name + " from cart")
-		
+
 		price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
 	
 	
 # Start the browser and login with standard_user
 def login (user, password):
-    print ('Starting the browser...')
+	print ('Starting the browser...')
     # --uncomment when running in Azure DevOps.
     options = ChromeOptions()
     options.add_argument("--headless") 
