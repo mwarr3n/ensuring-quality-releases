@@ -20,5 +20,13 @@ def login (user, password):
 
     print(" User " + user + " logged in successfully!")
     
+    inventory_items = driver.find_elements_by_class_name("inventory_list")
+    print("getting inventory items")
+    
+    for inventory_item in inventory_items:
+        item_name = inventory_item.find_element_by_class_name("inventory_item_label").find_element_by_class_name("inventory_item_name").text
+        print(item_name)
+
+    
 login('standard_user', 'secret_sauce')
 
