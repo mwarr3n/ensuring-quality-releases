@@ -33,7 +33,6 @@ def login (user, password):
 
             print("adding item " + item_name)
             add_to_cart = price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
-            print("------")
         
         cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
         print("Items in cart " + cart_badge)
@@ -48,11 +47,16 @@ def login (user, password):
 
             print("removing item " + item_name)
             add_to_cart = price_bar.find_element(By.CLASS_NAME, "btn_inventory").click()
-            print("------")
+            
+        cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge'.size() > 0   
         
-        cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
-        print("Items in cart " + cart_badge)
-        print("All items have been removed")
-        print("******")
+        if !cart_badge:
+            print("All items have been removed")
+                                                                     
+        
+#         cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
+#         print("Items in cart " + cart_badge)
+#         print("All items have been removed")
+#         print("******")
 
 login('standard_user', 'secret_sauce')
