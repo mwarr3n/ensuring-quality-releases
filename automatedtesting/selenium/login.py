@@ -50,13 +50,8 @@ def login (user, password):
             
         cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge'.size() > 0   
         
-        if !cart_badge:
+        if not cart_badge:
             print("All items have been removed")
-                                                                     
-        
-#         cart_badge = driver.find_element(By.CLASS_NAME, 'shopping_cart_badge').text
-#         print("Items in cart " + cart_badge)
-#         print("All items have been removed")
-#         print("******")
+                                                                    
 
 login('standard_user', 'secret_sauce')
