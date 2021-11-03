@@ -206,4 +206,4 @@ stages:
               displayName: 'Publish Selenium Log'
               inputs:
                 ArtifactName: 'Selenium Logt'
-                PathtoPublish: '$(Pipeline.Workspace)/selenium/vmlogs'
+                PathtoPublish: '$(Pipeline.Workspace)/selenium'
