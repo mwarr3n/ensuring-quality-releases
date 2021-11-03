@@ -124,8 +124,8 @@ stages:
         continueOnError: true
         inputs:
           script: | 
-            newman run dataValidationTestsUP3.postman_collection.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
-            newman run regressionTestsUP3.postman_collection.json -r cli,junitfull --reporter-junitfull-export result-regression-test-test.xml
+            newman run dataValidationTestsUP3.postman_collection.json -e testEnv.postman_environment.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
+            newman run regressionTestsUP3.postman_collection.json -e testEnv.postman_environment.json -r cli,junitfull --reporter-junitfull-export result-regression-test-test.xml
           workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
       - task: PublishTestResults@2
         inputs:
