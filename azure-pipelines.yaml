@@ -133,77 +133,77 @@ stages:
     #       testResultsFormat: JUnit
     #       testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
 
-    # - job: JmeterTest
-    #   pool:
-    #     vmImage: 'Ubuntu-latest'
-    #   steps:
-    #     - task: JMeterInstaller@0
-    #       displayName: 'Install JMeter 5.4.1'
-    #       inputs:
-    #         jmeterVersion: '5.4.1'
-    #     - task: Bash@3
-    #       displayName: 'JMeter Endurance Test'
-    #       inputs:
-    #         targetType: 'inline'
-    #         script: |
-    #           jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/log-endurance.jtl -e -o automatedtesting/jmeter/report-endurance
-    #     - task: PublishBuildArtifacts@1
-    #       displayName: 'Jmeter'
-    #       inputs:
-    #         ArtifactName: 'JMeter Endurance Test Report'
-    #         PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-endurance/'
-    #     - task: Bash@3
-    #       displayName: 'JMeter Stress Test'
-    #       inputs:
-    #         targetType: 'inline'
-    #         script: |
-    #           jmeter -n -t automatedtesting/jmeter/Starter.jmx -l automatedtesting/jmeter/logs/log-stress.jtl -e -o automatedtesting/jmeter/report-stress
-    #     - task: PublishBuildArtifacts@1
-    #       displayName: 'Jmeter'
-    #       inputs:
-    #         ArtifactName: 'JMeter Stress Test Report'
-    #         PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
-
-    - deployment: VMDeploy
-      displayName: 'Deploy VM'
+    - job: JmeterTest
       pool:
-        vmImage: 'ubuntu-latest'
-      environment: 'TEST'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - task: ExtractFiles@1
-              displayName: 'Extract Selenium Tests'
-              inputs:
-                archiveFilePatterns: '$(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium.zip'
-                destinationFolder: '$(Pipeline.Workspace)/selenium'
-                cleanDestinationFolder: false
-                overwriteExistingFiles: true
-            - task: Bash@3
-              displayName: 'Install Selenium Packages'
-              inputs:
-                targetType: 'inline'
-                script: |
-                  #! /bin/bash                
-                  sudo apt-get upgrade -y
-                  sudo apt-get install python3-pip -y
-                  sudo apt-get install unzip -y
-                  sudo apt-get install -y chromium-browser
-                  sudo apt-get install -y expect
-                  pip3 install selenium
-            - task: Bash@3
-              displayName: 'Run Selenium Test'
-              inputs:
-                targetType: 'inline'
-                script: |
-                  #! /bin/bash
+        vmImage: 'Ubuntu-latest'
+      steps:
+        - task: JMeterInstaller@0
+          displayName: 'Install JMeter 5.4.1'
+          inputs:
+            jmeterVersion: '5.4.1'
+        - task: Bash@3
+          displayName: 'JMeter Endurance Test'
+          inputs:
+            targetType: 'inline'
+            script: |
+              jmeter -n -t automatedtesting/jmeter/endurance.jmx -l automatedtesting/jmeter/logs/log-endurance.jtl -e -o automatedtesting/jmeter/report-endurance
+        - task: PublishBuildArtifacts@1
+          displayName: 'Jmeter'
+          inputs:
+            ArtifactName: 'JMeter Endurance Test Report'
+            PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-endurance/'
+        - task: Bash@3
+          displayName: 'JMeter Stress Test'
+          inputs:
+            targetType: 'inline'
+            script: |
+              jmeter -n -t automatedtesting/jmeter/stress.jmx -l automatedtesting/jmeter/logs/log-stress.jtl -e -o automatedtesting/jmeter/report-stress
+        - task: PublishBuildArtifacts@1
+          displayName: 'Jmeter'
+          inputs:
+            ArtifactName: 'JMeter Stress Test Report'
+            PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
 
-                  cd $(Pipeline.Workspace)/selenium
-                  mkdir vmlogs
-                  unbuffer python3 login.py | tee -a $(Pipeline.Workspace)/selenium/vmlogs/log.txt
-            - task: PublishBuildArtifacts@1
-              displayName: 'Publish Selenium Log'
-              inputs:
-                ArtifactName: 'Selenium Log'
-                PathtoPublish: '$(Pipeline.Workspace)/selenium/vmlogs'
+    # - deployment: VMDeploy
+    #   displayName: 'Deploy VM'
+    #   pool:
+    #     vmImage: 'ubuntu-latest'
+    #   environment: 'TEST'
+    #   strategy:
+    #     runOnce:
+    #       deploy:
+    #         steps:
+    #         - task: ExtractFiles@1
+    #           displayName: 'Extract Selenium Tests'
+    #           inputs:
+    #             archiveFilePatterns: '$(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium.zip'
+    #             destinationFolder: '$(Pipeline.Workspace)/selenium'
+    #             cleanDestinationFolder: false
+    #             overwriteExistingFiles: true
+    #         - task: Bash@3
+    #           displayName: 'Install Selenium Packages'
+    #           inputs:
+    #             targetType: 'inline'
+    #             script: |
+    #               #! /bin/bash                
+    #               sudo apt-get upgrade -y
+    #               sudo apt-get install python3-pip -y
+    #               sudo apt-get install unzip -y
+    #               sudo apt-get install -y chromium-browser
+    #               sudo apt-get install -y expect
+    #               pip3 install selenium
+    #         - task: Bash@3
+    #           displayName: 'Run Selenium Test'
+    #           inputs:
+    #             targetType: 'inline'
+    #             script: |
+    #               #! /bin/bash
+
+    #               cd $(Pipeline.Workspace)/selenium
+    #               mkdir vmlogs
+    #               unbuffer python3 login.py | tee -a $(Pipeline.Workspace)/selenium/vmlogs/log.txt
+    #         - task: PublishBuildArtifacts@1
+    #           displayName: 'Publish Selenium Log'
+    #           inputs:
+    #             ArtifactName: 'Selenium Log'
+    #             PathtoPublish: '$(Pipeline.Workspace)/selenium/vmlogs'
