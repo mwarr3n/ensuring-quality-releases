@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "4d34d52c-7708-4184-a925-bad4add99aaf",
+		"name": "dataValidationTestsUP3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Books",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Successful response\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Expected 200 records\", function () { ",
+							"        pm.expect(jsonData.length).is.to.equal(200); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/books",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json_response = pm.response.json();",
+							"var json_body = JSON.parse(pm.request.body.raw);",
+							"",
+							"pm.test(\"Successful response\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// pm.environment.set(\"bookID\", json.ID);",
+							"",
+							"pm.test(\"Validate Response\", function () {",
+							"    pm.expect(json_response.ID).to.eq(json_body.ID);",
+							"    pm.expect(json_response.Title).to.eq(json_body.Title);",
+							"    pm.expect(json_response.Description).to.eq(json_body.Description);",
+							"    pm.expect(json_response.Excerpt).to.eq(json_body.Excerpt);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"ID\": 999,\n  \"Title\": \"Book 999\",\n  \"Description\": \"This is a test Book\",\n  \"PageCount\": 999,\n  \"Excerpt\": \"Test Book\",\n  \"PublishDate\": \"2021-11-02T21:32:30.935Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/books",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json_response = pm.response.json();",
+							"var book_id = pm.environment.get(\"bookID\");",
+							"",
+							"pm.test(\"Successful response\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Book ID \" + book_id, function () {",
+							"    pm.expect(json_response.ID).to.eq(parseFloat(book_id));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/books/{{bookID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"books",
+						"{{bookID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/books/{{bookID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"books",
+						"{{bookID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json_response = pm.response.json();",
+							"var json_body = JSON.parse(pm.request.body.raw);",
+							"",
+							"pm.test(\"Successful response\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Validate Response\", function () {",
+							"    pm.expect(json_response.ID).to.eq(json_body.ID);",
+							"    pm.expect(json_response.Title).to.eq(json_body.Title);",
+							"    pm.expect(json_response.Description).to.eq(json_body.Description);",
+							"    pm.expect(json_response.Excerpt).to.eq(json_body.Excerpt);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"ID\": 999,\n  \"Title\": \"Book 999\",\n  \"Description\": \"This is a test Book\",\n  \"PageCount\": 999,\n  \"Excerpt\": \"Test Book\",\n  \"PublishDate\": \"2021-11-02T21:32:30.935Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/books/{{bookID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"books",
+						"{{bookID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
