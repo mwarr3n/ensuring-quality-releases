@@ -108,30 +108,30 @@ stages:
 
 - stage: Test
   jobs:
-    - job: postmanTest
-      pool:
-        vmImage: 'Ubuntu-latest'
-      steps:
-      - task: CmdLine@2
-        displayName: Install Newman
-        inputs:
-          script: | 
-            sudo npm install -g newman
-            sudo npm install -g newman-reporter-junitfull
-          workingDirectory: $(System.DefaultWorkingDirectory)
-      - task: CmdLine@2
-        displayName: Run Regression Tests
-        continueOnError: true
-        inputs:
-          script: | 
-            newman run dataValidationTestsUP3.postman_collection.json -e testEnv.postman_environment.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
-            newman run regressionTestsUP3.postman_collection.json -e testEnv.postman_environment.json -r cli,junitfull --reporter-junitfull-export result-regression-test-test.xml
-          workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-      - task: PublishTestResults@2
-        inputs:
-          testRunTitle: 'Regression Test'
-          testResultsFormat: JUnit
-          testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
+    # - job: postmanTest
+    #   pool:
+    #     vmImage: 'Ubuntu-latest'
+    #   steps:
+    #   - task: CmdLine@2
+    #     displayName: Install Newman
+    #     inputs:
+    #       script: | 
+    #         sudo npm install -g newman
+    #         sudo npm install -g newman-reporter-junitfull
+    #       workingDirectory: $(System.DefaultWorkingDirectory)
+    #   - task: CmdLine@2
+    #     displayName: Run Regression Tests
+    #     continueOnError: true
+    #     inputs:
+    #       script: | 
+    #         newman run dataValidationTestsUP3.postman_collection.json -e testEnv.postman_environment.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
+    #         newman run regressionTestsUP3.postman_collection.json -e testEnv.postman_environment.json -r cli,junitfull --reporter-junitfull-export result-regression-test-test.xml
+    #       workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+    #   - task: PublishTestResults@2
+    #     inputs:
+    #       testRunTitle: 'Regression Test'
+    #       testResultsFormat: JUnit
+    #       testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
 
     # - job: JmeterTest
     #   pool:
@@ -202,3 +202,8 @@ stages:
                   cd $(Pipeline.Workspace)/selenium
                   mkdir -p ~/vmlogs
                   unbuffer python3 login.py | tee -a ~/vmlogs/log.txt
+            - task: PublishBuildArtifacts@1
+              displayName: 'Publish Selenium Log'
+              inputs:
+                ArtifactName: 'Selenium Logt'
+                PathtoPublish: '$(Pipeline.Workspace)/selenium/vmlogs'
