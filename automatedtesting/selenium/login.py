@@ -7,7 +7,7 @@ import datetime
 def log (status, description):
 
     time_stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    print ("{0} {1} {2}".format(str(time_stamp), status, description))
+    print ("{0}, {1}, {2}".format(str(time_stamp), status, description))
 
 def manage_cart (inventory_items, action):
 
