@@ -26,7 +26,7 @@ def manage_cart (inventory_items, action):
 	
 # Start the browser and login with standard_user
 def login (user, password):
-    # print ('Starting the browser...')
+
     url = 'https://www.saucedemo.com/'
     log('info', 'staring browser.')
 
@@ -45,27 +45,24 @@ def login (user, password):
     driver.find_element(By.ID, "password").send_keys(password)
     driver.find_element(By.ID, "login-button").click()
 
-    # print(user + " logged in successfully!")
     log('success', user + ' logged in' )
 
     inventory_items = driver.find_elements(By.CLASS_NAME, "inventory_item")
-    # print("getting inventory items")
+
     log('info', 'getting inventory items' )
-    # print("Items found: " + str(len(inventory_items)))
+
     log('info', 'items found: ' + str(len(inventory_items)) )
 
     if inventory_items:    
         manage_cart (inventory_items, 'Add')
-        # print("All items added to cart")
+
         log('success', 'all items added to cart')
 
         manage_cart (inventory_items, 'Remove')
-        # print("All items removed from cart")
+
         log('success', 'all items removed from cart')
     
     driver.quit()
     log('info', 'done')
-
                                                                     
-
 login('standard_user', 'secret_sauce')
