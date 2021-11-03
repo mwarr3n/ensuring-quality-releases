@@ -205,5 +205,5 @@ stages:
             - task: PublishBuildArtifacts@1
               displayName: 'Publish Selenium Log'
               inputs:
-                ArtifactName: 'Selenium Logt'
-                PathtoPublish: '$(Pipeline.Workspace)/selenium/vmlogs'
+                ArtifactName: 'Selenium Log'
+                PathtoPublish: '$(System.DefaultWorkingDirectory)/selenium/vmlogs'
