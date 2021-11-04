@@ -165,7 +165,7 @@ stages:
             PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
 
     - deployment: VMDeploy
-      displayName: 'Deploy VM'
+      displayName: 'seleniumTest'
       pool:
         vmImage: 'ubuntu-latest'
       environment: 'TEST'
