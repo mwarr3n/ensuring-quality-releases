@@ -2,79 +2,79 @@ name: Azure Pipelines
 variables:
   python.version: '3.7.6'
 stages:
-# - stage: Infrastructure
-#   jobs:
-#     - job: Infrastructure
-#       pool:
-#         vmImage: ubuntu-latest
-#       steps:
-#         - task: InstallSSHKey@0
-#           inputs:
-#             knownHostsEntry: '$(KNOWN_HOST_ENTRY)'
-#             sshPublicKey: '$(PUBLIC_KEY)'
-#             sshKeySecureFile: 'id_rsa'
-#         - task: TerraformInstaller@0
-#           displayName: 'Terraform Install'
-#           inputs:
-#             terraformVersion: '1.0.10'
-#         - task: TerraformTaskV2@2
-#           displayName: 'Terraform Init'
-#           inputs:
-#             provider: 'azurerm'
-#             command: 'init'
-#             backendAzureRmResourceGroupName: 'tfstate'
-#             backendAzureRmStorageAccountName: 'tfstate30471'
-#             backendAzureRmContainerName: 'tfstate'
-#             backendAzureRmKey: '$(ACCESS_KEY)'
-#             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-#             backendServiceArm: 'terraform-sc'
-#         - task: TerraformTaskV2@2
-#           displayName: 'Terraform Validate'
-#           inputs:
-#             provider: 'azurerm'
-#             command: 'validate'
-#         # - task: TerraformTaskV2@2
-#         #   displayName: 'Terraform Destroy'
-#         #   inputs:
-#         #     provider: 'azurerm'
-#         #     command: 'destroy'
-#         #     commandOptions: '-var="public_key=$(PUBLIC_KEY)'
-#         #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-#         #     environmentServiceNameAzureRM: 'terraform-sc'
-#         - task: TerraformTaskV2@2
-#           displayName: 'Terraform Plan'
-#           inputs:
-#             provider: 'azurerm'
-#             command: 'plan'
-#             commandOptions: '-var="public_key=$(PUBLIC_KEY)'
-#             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-#             environmentServiceNameAzureRM: 'terraform-sc'
-#         - task: TerraformTaskV2@2
-#           displayName: 'Terraform Apply'
-#           inputs:
-#             provider: 'azurerm'
-#             command: 'apply'
-#             commandOptions: '-var="public_key=$(PUBLIC_KEY)'
-#             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-#             environmentServiceNameAzureRM: 'terraform-sc'
+- stage: Infrastructure
+  jobs:
+    - job: Infrastructure
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+        - task: InstallSSHKey@0
+          inputs:
+            knownHostsEntry: '$(KNOWN_HOST_ENTRY)'
+            sshPublicKey: '$(PUBLIC_KEY)'
+            sshKeySecureFile: 'id_rsa'
+        - task: TerraformInstaller@0
+          displayName: 'Terraform Install'
+          inputs:
+            terraformVersion: '1.0.10'
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform Init'
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            backendAzureRmResourceGroupName: 'tfstate'
+            backendAzureRmStorageAccountName: 'tfstate30471'
+            backendAzureRmContainerName: 'tfstate'
+            backendAzureRmKey: '$(ACCESS_KEY)'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            backendServiceArm: 'terraform-sc'
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform Validate'
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform Destroy'
+          inputs:
+            provider: 'azurerm'
+            command: 'destroy'
+            commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            environmentServiceNameAzureRM: 'terraform-sc'
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform Plan'
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            environmentServiceNameAzureRM: 'terraform-sc'
+        - task: TerraformTaskV2@2
+          displayName: 'Terraform Apply'
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            commandOptions: '-var="public_key=$(PUBLIC_KEY)'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            environmentServiceNameAzureRM: 'terraform-sc'
  
 - stage: Packaging
-  # dependsOn: Infrastructure
+  dependsOn: Infrastructure
   jobs:
     - job: Packaging
       pool:
         vmImage: ubuntu-latest
       steps:
-        # - task: ArchiveFiles@2
-        #   displayName: 'Archive FakeRestAPI'
-        #   inputs:
-        #     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
-        #     includeRootFolder: false
-        #     archiveType: 'zip'
-        #     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
-        # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-        #   displayName: 'Publish Package'
-        #   artifact: fakerestapi
+        - task: ArchiveFiles@2
+          displayName: 'Archive FakeRestAPI'
+          inputs:
+            rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+        - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+          displayName: 'Publish Package'
+          artifact: fakerestapi
         - task: ArchiveFiles@2
           displayName: 'Archive Selenium'
           inputs:
@@ -86,52 +86,52 @@ stages:
           displayName: 'Publish Selenium Package'
           artifact: selenium     
 
-# - stage: Deploy
-#   dependsOn: Packaging
-#   jobs:
-#     # - job: Deploy
-#     - deployment: FakeRestAPI
-#       pool:
-#         vmImage: 'Ubuntu-latest'
-#       environment: 'TEST'
-#       strategy:
-#         runOnce:
-#           deploy:
-#             steps:
-#             - task: AzureWebApp@1
-#               displayName: 'Deploy Azure Web App'
-#               inputs:
-#                 azureSubscription: 'azure-sc'
-#                 appName: 'udacity-p3-AppService'
-#                 appType: webApp
-#                 package: $(Pipeline.Workspace)/fakerestapi/$(Build.BuildId)-fakerestapi.zip
+- stage: Deploy
+  dependsOn: Packaging
+  jobs:
+    # - job: Deploy
+    - deployment: FakeRestAPI
+      pool:
+        vmImage: 'Ubuntu-latest'
+      environment: 'TEST'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: AzureWebApp@1
+              displayName: 'Deploy Azure Web App'
+              inputs:
+                azureSubscription: 'azure-sc'
+                appName: 'udacity-p3-AppService'
+                appType: webApp
+                package: $(Pipeline.Workspace)/fakerestapi/$(Build.BuildId)-fakerestapi.zip
 
 - stage: Test
   jobs:
-    # - job: postmanTest
-    #   pool:
-    #     vmImage: 'Ubuntu-latest'
-    #   steps:
-    #   - task: CmdLine@2
-    #     displayName: Install Newman
-    #     inputs:
-    #       script: | 
-    #         sudo npm install -g newman
-    #         sudo npm install -g newman-reporter-junitfull
-    #       workingDirectory: $(System.DefaultWorkingDirectory)
-    #   - task: CmdLine@2
-    #     displayName: Run Regression Tests
-    #     continueOnError: true
-    #     inputs:
-    #       script: | 
-    #         newman run dataValidationTestsUP3.postman_collection.json -e testEnv.postman_environment.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
-    #         newman run regressionTestsUP3.postman_collection.json -e testEnv.postman_environment.json -r cli,junitfull --reporter-junitfull-export result-regression-test-test.xml
-    #       workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-    #   - task: PublishTestResults@2
-    #     inputs:
-    #       testRunTitle: 'Regression Test'
-    #       testResultsFormat: JUnit
-    #       testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
+    - job: postmanTest
+      pool:
+        vmImage: 'Ubuntu-latest'
+      steps:
+      - task: CmdLine@2
+        displayName: Install Newman
+        inputs:
+          script: | 
+            sudo npm install -g newman
+            sudo npm install -g newman-reporter-junitfull
+          workingDirectory: $(System.DefaultWorkingDirectory)
+      - task: CmdLine@2
+        displayName: Run Regression Tests
+        continueOnError: true
+        inputs:
+          script: | 
+            newman run dataValidationTestsUP3.postman_collection.json -e testEnv.postman_environment.json -r cli,junitfull --reporter-junitfull-export result-data-validation-test.xml
+            newman run regressionTestsUP3.postman_collection.json -e testEnv.postman_environment.json -r cli,junitfull --reporter-junitfull-export result-regression-test-test.xml
+          workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+      - task: PublishTestResults@2
+        inputs:
+          testRunTitle: 'Regression Test'
+          testResultsFormat: JUnit
+          testResultsFiles: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/*.xml'
 
     - job: JmeterTest
       pool:
@@ -164,46 +164,46 @@ stages:
             ArtifactName: 'JMeter Stress Test Report'
             PathtoPublish: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/report-stress/'
 
-    # - deployment: VMDeploy
-    #   displayName: 'Deploy VM'
-    #   pool:
-    #     vmImage: 'ubuntu-latest'
-    #   environment: 'TEST'
-    #   strategy:
-    #     runOnce:
-    #       deploy:
-    #         steps:
-    #         - task: ExtractFiles@1
-    #           displayName: 'Extract Selenium Tests'
-    #           inputs:
-    #             archiveFilePatterns: '$(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium.zip'
-    #             destinationFolder: '$(Pipeline.Workspace)/selenium'
-    #             cleanDestinationFolder: false
-    #             overwriteExistingFiles: true
-    #         - task: Bash@3
-    #           displayName: 'Install Selenium Packages'
-    #           inputs:
-    #             targetType: 'inline'
-    #             script: |
-    #               #! /bin/bash                
-    #               sudo apt-get upgrade -y
-    #               sudo apt-get install python3-pip -y
-    #               sudo apt-get install unzip -y
-    #               sudo apt-get install -y chromium-browser
-    #               sudo apt-get install -y expect
-    #               pip3 install selenium
-    #         - task: Bash@3
-    #           displayName: 'Run Selenium Test'
-    #           inputs:
-    #             targetType: 'inline'
-    #             script: |
-    #               #! /bin/bash
+    - deployment: VMDeploy
+      displayName: 'Deploy VM'
+      pool:
+        vmImage: 'ubuntu-latest'
+      environment: 'TEST'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: ExtractFiles@1
+              displayName: 'Extract Selenium Tests'
+              inputs:
+                archiveFilePatterns: '$(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium.zip'
+                destinationFolder: '$(Pipeline.Workspace)/selenium'
+                cleanDestinationFolder: false
+                overwriteExistingFiles: true
+            - task: Bash@3
+              displayName: 'Install Selenium Packages'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  #! /bin/bash                
+                  sudo apt-get upgrade -y
+                  sudo apt-get install python3-pip -y
+                  sudo apt-get install unzip -y
+                  sudo apt-get install -y chromium-browser
+                  sudo apt-get install -y expect
+                  pip3 install selenium
+            - task: Bash@3
+              displayName: 'Run Selenium Test'
+              inputs:
+                targetType: 'inline'
+                script: |
+                  #! /bin/bash
 
-    #               cd $(Pipeline.Workspace)/selenium
-    #               mkdir vmlogs
-    #               unbuffer python3 login.py | tee -a $(Pipeline.Workspace)/selenium/vmlogs/log.txt
-    #         - task: PublishBuildArtifacts@1
-    #           displayName: 'Publish Selenium Log'
-    #           inputs:
-    #             ArtifactName: 'Selenium Log'
-    #             PathtoPublish: '$(Pipeline.Workspace)/selenium/vmlogs'
+                  cd $(Pipeline.Workspace)/selenium
+                  mkdir vmlogs
+                  unbuffer python3 login.py | tee -a $(Pipeline.Workspace)/selenium/vmlogs/log.txt
+            - task: PublishBuildArtifacts@1
+              displayName: 'Publish Selenium Log'
+              inputs:
+                ArtifactName: 'Selenium Log'
+                PathtoPublish: '$(Pipeline.Workspace)/selenium/vmlogs'
